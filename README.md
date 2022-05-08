@@ -1,5 +1,5 @@
-# pytorch_lightning_template
-pytorch_lightning_template
+# pytorch_lightning_bert
+BERT implementation from scratch
 
 ```python
 class BertModel(nn.Module):
