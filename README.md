@@ -1,6 +1,23 @@
 # pytorch_lightning_bert
 BERT implementation from scratch
 
+# Run BertForClassification
+```bash
+python run.py
+```
+
+# Test
+```python   
+model_config = BertConfig()
+model = BertModel(config=model_config)
+
+input_ids_rand = torch.randint(0, 10, (5, 30))
+attention_mask = torch.randint(0, 2, (5, 30))
+
+output = model(input_ids=input_ids_rand, attention_mask=attention_mask)
+```
+
+# Model Implementation
 ```python
 class BertModel(nn.Module):
     def __init__(self, config):
