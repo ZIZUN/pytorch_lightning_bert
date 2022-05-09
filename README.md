@@ -103,14 +103,14 @@ class MultiHeadAttention(nn.Module):
         bsz= q.size(0)
         seq_len = k.size(1)
         
-        q = q.view(bsz, self.config.multi_head_num, seq_len, -1)
-        k = k.view(bsz, self.config.multi_head_num, seq_len, -1)
-        v = v.view(bsz, self.config.multi_head_num, seq_len, -1)
+        q = q.view(bsz, seq_len, self.config.multi_head_num, -1).transpose(1,2)
+        k = k.view(bsz, seq_len, self.config.multi_head_num, -1).transpose(1,2)
+        v = v.view(bsz, seq_len, self.config.multi_head_num, -1).transpose(1,2)
         
         qk_mul = torch.matmul(q, k.transpose(-2,-1)) / math.sqrt(q.size(-1))
         mask = attention_mask.unsqueeze(1).expand(bsz, seq_len, seq_len).unsqueeze(1)
-        
-        qk_mul = qk_mul.masked_fill(mask == 1, -float('inf'))
+                
+        qk_mul = qk_mul.masked_fill(mask == 0, -float('inf'))
 
         qk_score = self.softmax(qk_mul) # divide by scaling factor
       
